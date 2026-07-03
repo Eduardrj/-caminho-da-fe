@@ -1037,8 +1037,10 @@ function entrar() {
   }
 
   socket.auth = { token };
+  socket.once('connect', () => {
+    socket.emit('entrar', { classe: classeEscolhida });
+  });
   socket.connect();
-  socket.emit('entrar', { classe: classeEscolhida });
 }
 
 // Event listeners de autenticação
