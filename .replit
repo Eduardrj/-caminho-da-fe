@@ -1,44 +1,5 @@
-<<<<<<< HEAD
 run = "npm start"
 modules = ["nodejs-20"]
 
 [nix]
 channel = "stable-24_05"
-
-[[ports]]
-localPort = 3000
-externalPort = 80
-
-[[ports]]
-localPort = 5000
-externalPort = 5000
-
-[deployment]
-deploymentTarget = "cloudrun"
-
-[workflows]
-runButton = "Project"
-
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start application"
-
-[[workflows.workflow]]
-name = "Start application"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm start"
-waitForPort = 5000
-
-[workflows.workflow.metadata]
-outputType = "webview"
-=======
-run = "node server.js"
->>>>>>> e84cbde9b058b107043d5c61e0e0d8a2d634dd34
