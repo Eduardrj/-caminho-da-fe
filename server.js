@@ -9,13 +9,26 @@ const fs = require('fs');
 const { Server } = require('socket.io');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(express.json());
+app.use(helmet({ contentSecurityPolicy: false })); // CSP desativado pois o jogo usa inline scripts/styles
+app.use(express.json({ limit: '10kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 20,                   // máx 20 tentativas por IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { erro: 'Muitas tentativas. Aguarde 15 minutos.' },
+});
+app.use('/api/register', authLimiter);
+app.use('/api/login', authLimiter);
 
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.SESSION_SECRET;
@@ -56,7 +69,9 @@ try {
 } catch { usuarios = {}; }
 
 function salvarUsuarios() {
-  fs.writeFileSync(ARQ_USUARIOS, JSON.stringify(usuarios, null, 2));
+  const tmp = ARQ_USUARIOS + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(usuarios, null, 2));
+  fs.renameSync(tmp, ARQ_USUARIOS);
 }
 
 function gerarToken(username) {
@@ -78,8 +93,8 @@ app.post('/api/register', async (req, res) => {
   if (username.length < 3 || username.length > 16) {
     return res.status(400).json({ erro: 'Username deve ter 3-16 caracteres' });
   }
-  if (password.length < 6) {
-    return res.status(400).json({ erro: 'Senha deve ter no mínimo 6 caracteres' });
+  if (password.length < 8) {
+    return res.status(400).json({ erro: 'Senha deve ter no mínimo 8 caracteres' });
   }
   if (usuarios[username.toLowerCase()]) {
     return res.status(400).json({ erro: 'Esse usuário já existe' });
@@ -142,7 +157,9 @@ function salvarJogador(j) {
 
 function gravarDisco() {
   try {
-    fs.writeFileSync(ARQ_JOGADORES, JSON.stringify(salvos, null, 2));
+    const tmp = ARQ_JOGADORES + '.tmp';
+    fs.writeFileSync(tmp, JSON.stringify(salvos, null, 2));
+    fs.renameSync(tmp, ARQ_JOGADORES);
   } catch (e) { console.error('Erro ao salvar:', e.message); }
 }
 setInterval(() => {
