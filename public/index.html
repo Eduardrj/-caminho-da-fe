@@ -12,8 +12,29 @@
     <div class="painel-login">
       <h1>✝️ Caminho da Fé</h1>
       <p class="subtitulo">MMORPG Gospel 3D — do Éden ao Livro de Daniel</p>
-      <input id="input-nome" type="text" maxlength="16" placeholder="Nome do seu herói" autocomplete="off">
-      <p class="rotulo">Escolha sua vocação:</p>
+
+      <!-- Tela de Login -->
+      <div id="tela-login-form">
+        <p class="rotulo">Faça login na sua conta:</p>
+        <input id="input-username" type="text" maxlength="16" placeholder="Nome de usuário" autocomplete="off">
+        <input id="input-senha" type="password" placeholder="Senha" autocomplete="off" style="margin-top: 10px;">
+        <button id="btn-login" style="margin-top: 14px; width: 100%; padding: 12px; background: linear-gradient(180deg, #e8c95a, #b8963a); color: #241c10; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Entrar</button>
+        <p class="dica" style="margin-top: 14px; text-align: center;">Não tem conta? <span id="link-registrar" style="color: #e8c95a; cursor: pointer; text-decoration: underline;">Criar conta</span></p>
+      </div>
+
+      <!-- Tela de Registro -->
+      <div id="tela-registro-form" class="oculto">
+        <p class="rotulo">Criar nova conta:</p>
+        <input id="input-username-reg" type="text" maxlength="16" placeholder="Nome de usuário (3-16 chars)" autocomplete="off">
+        <input id="input-senha-reg" type="password" placeholder="Senha (mín. 6 caracteres)" autocomplete="off" style="margin-top: 10px;">
+        <input id="input-senha-confirmar" type="password" placeholder="Confirmar senha" autocomplete="off" style="margin-top: 10px;">
+        <button id="btn-registrar" style="margin-top: 14px; width: 100%; padding: 12px; background: linear-gradient(180deg, #8fbf6f, #6ba85a); color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Criar conta</button>
+        <p class="dica" style="margin-top: 14px; text-align: center;">Já tem conta? <span id="link-voltar-login" style="color: #e8c95a; cursor: pointer; text-decoration: underline;">Voltar ao login</span></p>
+      </div>
+
+      <!-- Escolher classe (só após login) -->
+      <div id="tela-classe-form" class="oculto">
+        <p class="rotulo">Escolha sua vocação:</p>
       <div class="classes">
         <button class="btn-classe selecionada" data-classe="pastor">
           <span class="icone">🪨</span>
@@ -31,7 +52,9 @@
           <small>Equilibrado, palavra poderosa</small>
         </button>
       </div>
-      <button id="btn-entrar">Entrar na Aventura</button>
+      <button id="btn-entrar" class="oculto">Entrar na Aventura</button>
+      </div>
+
       <p class="dica">WASD andar · Espaço/clique atacar · Botão direito gira a câmera · Scroll dá zoom · E falar com NPC · F forja · M montaria · Enter chat</p>
       <p class="dica">🙏 Orações: 1 Súplica · 2 Gratidão (após vitória) · 3 Arrependimento (diante de um profeta)</p>
       <p class="dica">🌊 Milagres: 4 Dividir Águas (Fé 400+) · 5 Coluna de Fogo (Fé 300+)</p>

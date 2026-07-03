@@ -7,14 +7,18 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const { Server } = require('socket.io');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'caminho-da-fe-secret-2024';
 
 // ------------------------------------------------------------
 // Configuração do jogo (game design em game_config.json)
@@ -37,6 +41,74 @@ for (const p of CONFIG.covenant_system.covenants) {
   PACTOS[p.id] = p;
 }
 let aguasAbertasAte = 0; // milagre Dividir Águas: timestamp até quando o Jordão pode ser atravessado a nado
+
+// ------------------------------------------------------------
+// Autenticação (JWT + bcrypt)
+// ------------------------------------------------------------
+const ARQ_USUARIOS = path.join(__dirname, 'dados', 'usuarios.json');
+let usuarios = {};
+try {
+  usuarios = JSON.parse(fs.readFileSync(ARQ_USUARIOS, 'utf8'));
+} catch { usuarios = {}; }
+
+function salvarUsuarios() {
+  fs.writeFileSync(ARQ_USUARIOS, JSON.stringify(usuarios, null, 2));
+}
+
+function gerarToken(username) {
+  return jwt.sign({ username }, JWT_SECRET, { expiresIn: '7d' });
+}
+
+function verificarToken(token) {
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch { return null; }
+}
+
+// POST /api/register
+app.post('/api/register', async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ erro: 'Username e senha obrigatórios' });
+  }
+  if (username.length < 3 || username.length > 16) {
+    return res.status(400).json({ erro: 'Username deve ter 3-16 caracteres' });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ erro: 'Senha deve ter no mínimo 6 caracteres' });
+  }
+  if (usuarios[username.toLowerCase()]) {
+    return res.status(400).json({ erro: 'Esse usuário já existe' });
+  }
+
+  const hash = await bcrypt.hash(password, 10);
+  usuarios[username.toLowerCase()] = { username, hash, criadoEm: Date.now() };
+  salvarUsuarios();
+
+  const token = gerarToken(username);
+  res.json({ token, username });
+});
+
+// POST /api/login
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ erro: 'Username e senha obrigatórios' });
+  }
+
+  const user = usuarios[username.toLowerCase()];
+  if (!user) {
+    return res.status(401).json({ erro: 'Username ou senha incorretos' });
+  }
+
+  const correto = await bcrypt.compare(password, user.hash);
+  if (!correto) {
+    return res.status(401).json({ erro: 'Username ou senha incorretos' });
+  }
+
+  const token = gerarToken(user.username);
+  res.json({ token, username: user.username });
+});
 
 // ------------------------------------------------------------
 // Persistência (progresso salvo pelo nome do herói)
@@ -521,10 +593,24 @@ function bonusDropPacto(j) {
 
 // ------------------------------------------------------------
 // Conexões
+// Middleware de autenticação Socket.IO
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (!token) {
+    return next(new Error('Token não fornecido'));
+  }
+  const payload = verificarToken(token);
+  if (!payload) {
+    return next(new Error('Token inválido ou expirado'));
+  }
+  socket.username = payload.username;
+  next();
+});
+
 // ------------------------------------------------------------
 io.on('connection', (socket) => {
-  socket.on('entrar', ({ nome, classe }) => {
-    nome = String(nome || '').trim().slice(0, 16) || 'Peregrino';
+  socket.on('entrar', ({ classe }) => {
+    const nome = socket.username;
     if (!CLASSES[classe]) classe = 'pastor';
 
     // Restaura progresso salvo pelo nome

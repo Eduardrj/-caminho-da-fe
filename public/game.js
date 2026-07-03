@@ -1,7 +1,7 @@
 // ============================================================
 //  AVENTURA BÍBLICA MMO — Cliente 3D estilo blocos (Three.js)
 // ============================================================
-const socket = io();
+const socket = io({ autoConnect: false });
 
 const canvas3d = document.getElementById('canvas3d');
 const overlay = document.getElementById('overlay');
@@ -927,7 +927,142 @@ function criarMob3d(m) {
 
 // ------------------------------------------------------------
 // Tela de login
-// ------------------------------------------------------------
+// ============ AUTENTICAÇÃO ============
+function mostrarTelaLogin() {
+  document.getElementById('tela-login-form').classList.remove('oculto');
+  document.getElementById('tela-registro-form').classList.add('oculto');
+  document.getElementById('tela-classe-form').classList.add('oculto');
+}
+
+function mostrarTelaRegistro() {
+  document.getElementById('tela-login-form').classList.add('oculto');
+  document.getElementById('tela-registro-form').classList.remove('oculto');
+  document.getElementById('tela-classe-form').classList.add('oculto');
+}
+
+function mostrarTelaClasse() {
+  document.getElementById('tela-login-form').classList.add('oculto');
+  document.getElementById('tela-registro-form').classList.add('oculto');
+  document.getElementById('tela-classe-form').classList.remove('oculto');
+}
+
+function salvarToken(token) {
+  localStorage.setItem('token', token);
+}
+
+function obterToken() {
+  return localStorage.getItem('token');
+}
+
+function removerToken() {
+  localStorage.removeItem('token');
+}
+
+async function fazerLogin() {
+  const username = document.getElementById('input-username').value.trim();
+  const password = document.getElementById('input-senha').value;
+
+  if (!username || !password) {
+    alert('Preencha username e senha');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.erro || 'Erro ao fazer login');
+      return;
+    }
+
+    salvarToken(data.token);
+    document.getElementById('input-username').value = '';
+    document.getElementById('input-senha').value = '';
+    mostrarTelaClasse();
+  } catch (e) {
+    alert('Erro na conexão: ' + e.message);
+  }
+}
+
+async function fazerRegistro() {
+  const username = document.getElementById('input-username-reg').value.trim();
+  const password = document.getElementById('input-senha-reg').value;
+  const confirmar = document.getElementById('input-senha-confirmar').value;
+
+  if (!username || !password || !confirmar) {
+    alert('Preencha todos os campos');
+    return;
+  }
+
+  if (password !== confirmar) {
+    alert('As senhas não coincidem');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.erro || 'Erro ao criar conta');
+      return;
+    }
+
+    salvarToken(data.token);
+    document.getElementById('input-username-reg').value = '';
+    document.getElementById('input-senha-reg').value = '';
+    document.getElementById('input-senha-confirmar').value = '';
+    mostrarTelaClasse();
+  } catch (e) {
+    alert('Erro na conexão: ' + e.message);
+  }
+}
+
+function entrar() {
+  const token = obterToken();
+  if (!token) {
+    alert('Token não encontrado. Faça login novamente.');
+    removerToken();
+    mostrarTelaLogin();
+    return;
+  }
+
+  socket.auth = { token };
+  socket.connect();
+  socket.emit('entrar', { classe: classeEscolhida });
+}
+
+// Event listeners de autenticação
+document.getElementById('link-registrar').addEventListener('click', mostrarTelaRegistro);
+document.getElementById('link-voltar-login').addEventListener('click', mostrarTelaLogin);
+document.getElementById('btn-login').addEventListener('click', fazerLogin);
+document.getElementById('btn-registrar').addEventListener('click', fazerRegistro);
+document.getElementById('input-username').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerLogin();
+});
+document.getElementById('input-senha').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerLogin();
+});
+document.getElementById('input-username-reg').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerRegistro();
+});
+document.getElementById('input-senha-reg').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerRegistro();
+});
+document.getElementById('input-senha-confirmar').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerRegistro();
+});
+
+// Escolha de classe
 document.querySelectorAll('.btn-classe').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.btn-classe').forEach(b => b.classList.remove('selecionada'));
@@ -936,13 +1071,23 @@ document.querySelectorAll('.btn-classe').forEach(btn => {
   });
 });
 
-function entrar() {
-  const nome = document.getElementById('input-nome').value.trim() || 'Peregrino';
-  socket.emit('entrar', { nome, classe: classeEscolhida });
-}
 document.getElementById('btn-entrar').addEventListener('click', entrar);
-document.getElementById('input-nome').addEventListener('keydown', e => {
-  if (e.key === 'Enter') entrar();
+
+// Verificar se há token salvo ao carregar
+window.addEventListener('load', () => {
+  const token = obterToken();
+  if (token) {
+    mostrarTelaClasse();
+  } else {
+    mostrarTelaLogin();
+  }
+});
+
+socket.on('connect_error', (error) => {
+  console.error('Erro de conexão:', error.message);
+  alert('Erro de autenticação: ' + error.message);
+  removerToken();
+  mostrarTelaLogin();
 });
 
 socket.on('mundo', (dados) => {
