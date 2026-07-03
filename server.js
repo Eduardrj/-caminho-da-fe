@@ -17,8 +17,12 @@ const io = new Server(server);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'caminho-da-fe-secret-2024';
+const PORT = process.env.PORT || 5000;
+const JWT_SECRET = process.env.SESSION_SECRET;
+if (!JWT_SECRET) {
+  console.error('FATAL: SESSION_SECRET environment variable is not set.');
+  process.exit(1);
+}
 
 // ------------------------------------------------------------
 // Configuração do jogo (game design em game_config.json)
