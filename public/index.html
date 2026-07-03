@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caminho da Fé — MMORPG Gospel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Tela de login -->
+  <div id="tela-login">
+    <div class="painel-login">
+      <h1>✝️ Caminho da Fé</h1>
+      <p class="subtitulo">MMORPG Gospel 3D — do Éden ao Livro de Daniel</p>
+      <input id="input-nome" type="text" maxlength="16" placeholder="Nome do seu herói" autocomplete="off">
+      <p class="rotulo">Escolha sua vocação:</p>
+      <div class="classes">
+        <button class="btn-classe selecionada" data-classe="pastor">
+          <span class="icone">🪨</span>
+          <strong>Pastor de Ovelhas</strong>
+          <small>Funda de longo alcance, como Davi</small>
+        </button>
+        <button class="btn-classe" data-classe="guerreiro">
+          <span class="icone">🛡️</span>
+          <strong>Guerreiro de Judá</strong>
+          <small>Forte no corpo a corpo, muita vida</small>
+        </button>
+        <button class="btn-classe" data-classe="profeta">
+          <span class="icone">📜</span>
+          <strong>Profeta</strong>
+          <small>Equilibrado, palavra poderosa</small>
+        </button>
+      </div>
+      <button id="btn-entrar">Entrar na Aventura</button>
+      <p class="dica">WASD andar · Espaço/clique atacar · Botão direito gira a câmera · Scroll dá zoom · E falar com NPC · F forja · M montaria · Enter chat</p>
+      <p class="dica">🙏 Orações: 1 Súplica · 2 Gratidão (após vitória) · 3 Arrependimento (diante de um profeta)</p>
+      <p class="dica">🌊 Milagres: 4 Dividir Águas (Fé 400+) · 5 Coluna de Fogo (Fé 300+)</p>
+      <p class="dica">🕊️ Pactos: 6-9 para ativar pactos desbloqueados · objetivo final = Pacto Danielico</p>
+      <p class="dica">💾 Seu progresso é salvo automaticamente pelo nome do herói</p>
+    </div>
+  </div>
+
+  <!-- Jogo -->
+  <div id="tela-jogo" class="oculto">
+    <canvas id="canvas3d"></canvas>
+    <canvas id="overlay"></canvas>
+
+    <!-- HUD superior -->
+    <div id="hud-topo">
+      <div id="hud-status">
+        <div id="hud-nome"></div>
+        <div class="barra"><div id="barra-hp" class="preenchimento hp"></div><span id="texto-hp"></span></div>
+        <div class="barra"><div id="barra-xp" class="preenchimento xp"></div><span id="texto-xp"></span></div>
+        <div class="barra"><div id="barra-fe" class="preenchimento fe"></div><span id="texto-fe"></span></div>
+        <div id="hud-pacto"></div>
+        <div id="hud-debuffs"></div>
+        <div id="hud-equip">
+          <span id="hud-moedas">🪙 0</span>
+          <span id="hud-arma">⚔️ Nv 1</span>
+          <span id="hud-armadura">🛡️ Nv 1</span>
+          <span id="hud-sandalias">👟 Nv 1</span>
+          <span id="hud-escudo">🔰 Nv 1</span>
+          <span id="hud-montaria" class="oculto">🐴</span>
+        </div>
+      </div>
+      <div id="hud-online">
+        <div>🌍 <span id="qtd-online">1</span> aventureiro(s) online</div>
+        <div id="hud-hora">☀️ Dia</div>
+      </div>
+    </div>
+
+    <!-- Missão atual -->
+    <div id="hud-quest" class="oculto">
+      <strong>📜 <span id="quest-titulo"></span></strong>
+      <div id="quest-desc"></div>
+      <div id="quest-prog"></div>
+    </div>
+
+    <!-- Forja de Bezalel -->
+    <div id="forja" class="oculto">
+      <h2>🔨 Forja de Bezalel</h2>
+      <p class="forja-sub">"Enchi-o do Espírito de Deus, de habilidade em todo artifício" — Êxodo 31:3</p>
+      <div class="forja-moedas">Seus shekels: <span id="forja-moedas">0</span> 🪙</div>
+      <div class="forja-item">
+        <div class="forja-info">
+          <strong id="forja-arma-nome">⚔️ Arma</strong>
+          <small id="forja-arma-status"></small>
+        </div>
+        <button id="btn-melhorar-arma">Forjar</button>
+      </div>
+      <div class="forja-item">
+        <div class="forja-info">
+          <strong>🛡️ Vestimenta</strong>
+          <small id="forja-armadura-status"></small>
+        </div>
+        <button id="btn-melhorar-armadura">Forjar</button>
+      </div>
+      <div class="forja-item">
+        <div class="forja-info">
+          <strong>👟 Sandálias</strong>
+          <small id="forja-sandalias-status"></small>
+        </div>
+        <button id="btn-melhorar-sandalias">Forjar</button>
+      </div>
+      <div class="forja-item">
+        <div class="forja-info">
+          <strong>🔰 Escudo</strong>
+          <small id="forja-escudo-status"></small>
+        </div>
+        <button id="btn-melhorar-escudo">Forjar</button>
+      </div>
+      <button id="btn-fechar-forja">Fechar (F)</button>
+    </div>
+
+    <!-- Estábulo de Obede -->
+    <div id="estabulo" class="oculto">
+      <h2>🐴 Estábulo de Obede</h2>
+      <p class="forja-sub">"Não atarás a boca ao boi quando trilhar" — Deuteronômio 25:4</p>
+      <div class="forja-moedas">Seus shekels: <span id="estabulo-moedas">0</span> 🪙</div>
+      <div class="forja-item">
+        <div class="forja-info">
+          <strong>🫏 Jumento</strong>
+          <small id="estabulo-jumento-status"></small>
+        </div>
+        <button id="btn-jumento">Comprar</button>
+      </div>
+      <div class="forja-item">
+        <div class="forja-info">
+          <strong>🐪 Camelo</strong>
+          <small id="estabulo-camelo-status"></small>
+        </div>
+        <button id="btn-camelo">Comprar</button>
+      </div>
+      <p class="dica">Pressione M a qualquer momento para montar / desmontar</p>
+      <button id="btn-fechar-estabulo">Fechar (E)</button>
+    </div>
+
+    <!-- Diálogo de NPC -->
+    <div id="dialogo" class="oculto">
+      <strong id="dialogo-npc"></strong>
+      <p id="dialogo-texto"></p>
+      <small>(clique ou pressione E para fechar)</small>
+    </div>
+
+    <!-- Chat -->
+    <div id="chat">
+      <div id="chat-mensagens"></div>
+      <input id="chat-input" type="text" maxlength="200" placeholder="Pressione Enter para conversar..." autocomplete="off">
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="lib/three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
+

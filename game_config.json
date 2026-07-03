@@ -1,0 +1,349 @@
+{
+  "game_info": {
+    "name": "Caminho da Fé",
+    "genre": "MMORPG Gospel",
+    "version": "1.0.0",
+    "description": "MMORPG bíblico do Jardim do Éden ao Livro de Daniel",
+    "max_level": 100,
+    "currency": "Shekel"
+  },
+
+  "narrative_acts": [
+    {
+      "act": 1,
+      "name": "Jardim do Éden",
+      "level_range": [1, 10],
+      "biblical_period": "Criação & Queda",
+      "zones": ["Éden", "Terras fora do Éden"],
+      "key_npcs": ["Adão", "Eva", "Serpente"],
+      "main_quests": ["nomear os animais", "guardar o jardim", "a tentação e a queda"],
+      "covenant_available": "Adâmico"
+    },
+    {
+      "act": 2,
+      "name": "O Mundo Antigo",
+      "level_range": [11, 25],
+      "biblical_period": "Caim & Abel, Antediluvianos, Dilúvio",
+      "zones": ["Terras de Nod", "Arca de Noé", "Monte Ararate"],
+      "key_npcs": ["Caim", "Abel", "Noé", "Sem", "Cam", "Jafé"],
+      "main_quests": ["o sacrifício aceito", "construir a arca", "sobreviver ao dilúvio", "o pacto do arco-íris"],
+      "covenant_available": "Noético"
+    },
+    {
+      "act": 3,
+      "name": "As Nações",
+      "level_range": [26, 35],
+      "biblical_period": "Torre de Babel, Dispersão",
+      "zones": ["Babilônia Antiga", "Vale de Sinar", "Terras Dispersas"],
+      "key_npcs": ["Ninrode", "Pelegue", "Tera"],
+      "main_quests": ["a Torre de Babel", "a dispersão das línguas", "encontrar o caminho de volta"],
+      "covenant_available": "Noético"
+    },
+    {
+      "act": 4,
+      "name": "Os Patriarcas",
+      "level_range": [36, 50],
+      "biblical_period": "Abraão, Isaque, Jacó, José",
+      "zones": ["Ur dos Caldeus", "Canaã", "Harã", "Siquém", "Egito"],
+      "key_npcs": ["Abraão", "Sara", "Ló", "Isaque", "Rebeca", "Jacó", "Esaú", "José", "Benjamim"],
+      "main_quests": ["a chamada de Abraão", "o sacrifício de Isaque", "a escada de Jacó", "José no Egito", "a fome e a reunião da família"],
+      "covenant_available": "Abraâmico"
+    },
+    {
+      "act": 5,
+      "name": "Libertação",
+      "level_range": [51, 65],
+      "biblical_period": "Êxodo, Sinai, Conquista de Canaã",
+      "zones": ["Egito", "Mar Vermelho", "Deserto do Sinai", "Canaã", "Jericó"],
+      "key_npcs": ["Moisés", "Arão", "Miriã", "Josué", "Calebe", "Raabe"],
+      "main_quests": ["as dez pragas", "a travessia do Mar Vermelho", "os dez mandamentos", "a peregrinação no deserto", "a conquista de Jericó"],
+      "covenant_available": "Mosaico"
+    },
+    {
+      "act": 6,
+      "name": "Terra e Reis",
+      "level_range": [66, 80],
+      "biblical_period": "Juízes, Reino Unido, Reino Dividido",
+      "zones": ["Siló", "Belém", "Jerusalém", "Hebrom", "Samaria", "Siquém"],
+      "key_npcs": ["Débora", "Gideão", "Sansão", "Samuel", "Saul", "Davi", "Salomão", "Roboão", "Jeroboão"],
+      "main_quests": ["o chamado de Gideão", "Sansão e Dalila", "a unção de Davi", "Davi e Golias", "o Templo de Salomão", "a divisão do reino"],
+      "covenant_available": "Davídico"
+    },
+    {
+      "act": 7,
+      "name": "Cativeiro",
+      "level_range": [81, 100],
+      "biblical_period": "Exílio Babilônico, Daniel na Corte",
+      "zones": ["Babilônia", "Susã", "Cova dos Leões", "Fornalha Ardente", "Palácio de Nabucodonosor"],
+      "key_npcs": ["Daniel", "Sadraque", "Mesaque", "Abede-Nego", "Nabucodonosor", "Belsazar", "Dario", "Ciro"],
+      "main_quests": ["o exílio para a Babilônia", "a recusa da comida do rei", "o sonho de Nabucodonosor", "a fornalha ardente", "a escritura na parede", "a cova dos leões", "as visões de Daniel"],
+      "covenant_available": "Danielico"
+    }
+  ],
+
+  "faith_system": {
+    "description": "Atributo central que mede a relação do jogador com Deus",
+    "faith_points": {
+      "min": 0,
+      "max": 1000,
+      "starting_value": 400,
+      "milestones": [
+        { "threshold": 10, "reward": "desbloqueia oração de súplica" },
+        { "threshold": 25, "reward": "desbloqueia intercessão por aliados" },
+        { "threshold": 50, "reward": "desbloqueia cura por imposição de mãos" },
+        { "threshold": 100, "reward": "acesso a milagres menores" },
+        { "threshold": 250, "reward": "acesso a milagres maiores" },
+        { "threshold": 500, "reward": "intervenção divina disponível" },
+        { "threshold": 750, "reward": "visão profética" },
+        { "threshold": 1000, "reward": "estado de retidão plena, todos os milagres" }
+      ]
+    },
+    "piety_score": {
+      "description": "Pontuação acumulada que nunca diminui, usada para ranking e desbloqueio de pactos",
+      "min": 0,
+      "max": 999999,
+      "starting_value": 0
+    },
+    "faith_states": [
+      { "name": "Retidão", "id": "retidao", "min_percent": 80, "max_percent": 100, "effects": { "miracle_access": "all", "npc_trust": "high", "damage_bonus": 0.1 } },
+      { "name": "Tímido", "id": "timido", "min_percent": 40, "max_percent": 79, "effects": { "miracle_access": "partial", "npc_trust": "medium" } },
+      { "name": "Caído", "id": "caido", "min_percent": 0, "max_percent": 39, "effects": { "miracle_access": "none", "npc_trust": "low", "debuffs": ["culpa"] } }
+    ],
+    "faith_gain_actions": [
+      { "action": "completar_quest_de_profeta", "faith_gain": 15, "piety_gain": 20 },
+      { "action": "escolher_caminho_retidao", "faith_gain": 10, "piety_gain": 15 },
+      { "action": "ajudar_npc_necessitado", "faith_gain": 5, "piety_gain": 8 },
+      { "action": "preservar_criacao", "faith_gain": 3, "piety_gain": 5 },
+      { "action": "recusar_idolatria", "faith_gain": 20, "piety_gain": 25 },
+      { "action": "perdoar_inimigo", "faith_gain": 12, "piety_gain": 18 },
+      { "action": "sacrificar_recurso_por_outrem", "faith_gain": 8, "piety_gain": 12 }
+    ],
+    "faith_loss_actions": [
+      { "action": "adorar_idolos", "faith_loss": 50, "triggers_debuff": "idolatria" },
+      { "action": "trapacear", "faith_loss": 15 },
+      { "action": "mentir", "faith_loss": 10 },
+      { "action": "trair_aliado", "faith_loss": 30 },
+      { "action": "desprezar_profeta", "faith_loss": 25 },
+      { "action": "ignorar_mandamento", "faith_loss": 20 },
+      { "action": "violar_voto", "faith_loss": 35, "triggers_debuff": "quebra_de_voto" }
+    ],
+    "repentance_system": {
+      "description": "Ao confessar a um NPC profeta, o jogador restaura parte da Fé perdida",
+      "faith_restored_percent": 50,
+      "cooldown_seconds": 600,
+      "requires_npc_prophet": true,
+      "prophet_npcs": ["Moisés", "Daniel", "Samuel", "Elias", "Isaías", "Jeremias", "Ezequiel"]
+    }
+  },
+
+  "prayer_system": {
+    "description": "Sistema de oração com tipos distintos, cooldowns e respostas probabilísticas",
+    "prayer_types": [
+      {
+        "id": "suplica",
+        "name": "Súplica",
+        "description": "Pede cura, proteção ou recurso imediato",
+        "cooldown_seconds": 60,
+        "requires_faith_min": 10,
+        "biblical_reference": "Daniel 6",
+        "implemented": true
+      },
+      {
+        "id": "gratidao",
+        "name": "Gratidão",
+        "description": "Oferece graças logo após uma vitória",
+        "cooldown_seconds": 30,
+        "requires_faith_min": 5,
+        "biblical_reference": "Êxodo 15 (Cântico de Moisés)",
+        "must_trigger_after_combat_win": true,
+        "combat_win_window_seconds": 15,
+        "implemented": true
+      },
+      {
+        "id": "arrependimento",
+        "name": "Arrependimento",
+        "description": "Restaura Fé perdida por pecado; requer um profeta próximo",
+        "cooldown_seconds": 600,
+        "requires_faith_min": 0,
+        "biblical_reference": "Salmo 51 (Davi)",
+        "requires_npc_prophet": true,
+        "implemented": true
+      },
+      {
+        "id": "intercessao",
+        "name": "Intercessão",
+        "description": "Ora por outro jogador ou NPC",
+        "cooldown_seconds": 300,
+        "requires_faith_min": 25,
+        "biblical_reference": "Gênesis 18 (Abraão por Sodoma)",
+        "implemented": false
+      },
+      {
+        "id": "profetica",
+        "name": "Profética",
+        "description": "Recebe visão ou guia para a próxima quest",
+        "cooldown_seconds": 3600,
+        "requires_faith_min": 200,
+        "biblical_reference": "Daniel 7-12 (Visões)",
+        "implemented": false
+      }
+    ],
+    "divine_response_roll": {
+      "description": "Roll de resposta divina quando o jogador ora. O resultado final é limitado a 1-100.",
+      "formula": "R = clamp( d100 + min(80, fe_atual / 25) + modificadores - penalidade_pecado , 1, 100 )",
+      "response_tiers": [
+        { "tier": "silencio", "min_roll": 1, "max_roll": 20, "effect": "oração não atendida, sem penalidade" },
+        { "tier": "bonus_menor", "min_roll": 21, "max_roll": 50, "effect": "efeito leve" },
+        { "tier": "bencao_parcial", "min_roll": 51, "max_roll": 80, "effect": "cura parcial e escudo de proteção" },
+        { "tier": "milagre", "min_roll": 81, "max_roll": 95, "effect": "cura total e bênçãos maiores" },
+        { "tier": "intervencao_divina", "min_roll": 96, "max_roll": 100, "effect": "milagre épico anunciado ao servidor" }
+      ],
+      "modifiers": {
+        "praying_at_holy_place": 15,
+        "praying_with_group_per_player": 10,
+        "fasting_active": 30,
+        "sin_debuff_active": -30
+      }
+    }
+  },
+
+  "covenant_system": {
+    "description": "Pactos bíblicos que concedem conjuntos diferentes de bênçãos conforme o jogador avança na narrativa",
+    "covenants": [
+      {
+        "id": "adamico",
+        "name": "Pacto Adâmico",
+        "biblical_reference": "Gênesis 1-3",
+        "required_level": 1,
+        "required_piety": 0,
+        "boons": [
+          { "name": "cura_basica", "description": "Cura leve por imposição de mãos", "type": "active" },
+          { "name": "discernimento_de_ervas", "description": "Identifica plantas curativas no ambiente", "type": "passive" }
+        ]
+      },
+      {
+        "id": "noetico",
+        "name": "Pacto Noético",
+        "biblical_reference": "Gênesis 9",
+        "required_level": 2,
+        "required_piety": 30,
+        "boons": [
+          { "name": "resistencia_elemental", "description": "+20% resistência a fogo, água e frio", "type": "passive" },
+          { "name": "arca_de_transporte", "description": "Invoca montaria temporária", "type": "active" },
+          { "name": "sobrevivencia_extrema", "description": "Reduz consumo de recursos em 30%", "type": "passive" }
+        ]
+      },
+      {
+        "id": "abraamico",
+        "name": "Pacto Abraâmico",
+        "biblical_reference": "Gênesis 12, 15, 17",
+        "required_level": 4,
+        "required_piety": 100,
+        "boons": [
+          { "name": "lideranca_potenciada", "description": "+15% eficácia de comandos em grupo", "type": "passive" },
+          { "name": "invocar_aliados", "description": "Convoca NPCs aliados por 60s", "type": "active" },
+          { "name": "bencao_de_prosperidade", "description": "+20% drop de recursos", "type": "passive" }
+        ]
+      },
+      {
+        "id": "mosaico",
+        "name": "Pacto Mosaico",
+        "biblical_reference": "Êxodo 19-24",
+        "required_level": 6,
+        "required_piety": 220,
+        "boons": [
+          { "name": "acesso_a_milagres", "description": "Desbloqueia milagres do sistema divino", "type": "system_unlock" },
+          { "name": "dividir_aguas", "description": "Cria passagem em corpos d'água", "type": "active" },
+          { "name": "mana_do_ceu", "description": "Gera recurso para o grupo", "type": "active" },
+          { "name": "coluna_de_fogo", "description": "Ilumina e protege área à noite", "type": "active" }
+        ]
+      },
+      {
+        "id": "davidico",
+        "name": "Pacto Davídico",
+        "biblical_reference": "2 Samuel 7",
+        "required_level": 8,
+        "required_piety": 400,
+        "boons": [
+          { "name": "autoridade_sobre_inimigos", "description": "+25% dano contra inimigos ímpios", "type": "passive" },
+          { "name": "comando_de_exercitos", "description": "Lidera esquadrão de NPCs em combate", "type": "active" },
+          { "name": "protecao_angelical", "description": "Anjo guardião bloqueia 1 ataque letal por hora", "type": "passive" }
+        ]
+      },
+      {
+        "id": "danielico",
+        "name": "Pacto Danielico",
+        "biblical_reference": "Daniel 1-12",
+        "required_level": 10,
+        "required_piety": 600,
+        "boons": [
+          { "name": "visoes_profeticas", "description": "Revela eventos futuros do servidor", "type": "active" },
+          { "name": "interpretar_sonhos", "description": "Decifra enigmas e quests ocultas", "type": "active" },
+          { "name": "fe_inabalavel", "description": "Imune a debuffs de medo e desespero", "type": "passive" },
+          { "name": "protecao_na_fornalha", "description": "Imune a dano de fogo em estado de retidão", "type": "passive" },
+          { "name": "fechar_boca_de_leoes", "description": "Acalma bestas selvagens", "type": "active" }
+        ]
+      }
+    ]
+  },
+
+  "sin_system": {
+    "description": "Sistema de consequências por ações contrárias à fé",
+    "sin_debuffs": [
+      {
+        "id": "idolatria",
+        "name": "Idolatria",
+        "duration_minutes": 10,
+        "effects": { "faith_gain_multiplier": 0.0, "prayer_roll_penalty": -30 },
+        "cure": "arrependimento"
+      },
+      {
+        "id": "culpa",
+        "name": "Culpa",
+        "duration_minutes": 30,
+        "effects": { "movement_speed_penalty": -10 },
+        "cure": "arrependimento"
+      },
+      {
+        "id": "quebra_de_voto",
+        "name": "Quebra de Voto",
+        "duration_minutes": 120,
+        "effects": { "faith_loss_per_hour": 5, "covenant_suspended": true },
+        "cure": "arrependimento + renovar_voto_com_profeta",
+        "implemented": false
+      }
+    ]
+  },
+
+  "miracle_system": {
+    "description": "Milagres desbloqueados por nível de Fé e pacto ativo (fases futuras)",
+    "miracles": [
+      { "id": "heal_touch", "name": "Cura por Imposição de Mãos", "required_faith": 100, "required_covenant": "adamico", "cooldown_seconds": 120, "effect": "cura 30% HP do alvo", "type": "single_target" },
+      { "id": "manna", "name": "Maná do Céu", "required_faith": 250, "required_covenant": "mosaico", "cooldown_seconds": 600, "effect": "gera recurso para todo o grupo", "type": "group" },
+      { "id": "pillar_fire", "name": "Coluna de Fogo", "required_faith": 300, "required_covenant": "mosaico", "cooldown_seconds": 90, "duration_seconds": 6, "effect": "dano em área a inimigos e cura aliados próximos", "type": "area", "implemented": true },
+      { "id": "part_waters", "name": "Dividir Águas", "required_faith": 400, "required_covenant": "mosaico", "cooldown_seconds": 180, "duration_seconds": 20, "effect": "abre passagem a nado pelo Rio Jordão", "type": "environmental", "implemented": true },
+      { "id": "angel_guard", "name": "Proteção Angelical", "required_faith": 500, "required_covenant": "davidico", "cooldown_seconds": 3600, "effect": "bloqueia 1 ataque letal por ativação", "type": "passive_shield" },
+      { "id": "resurrection", "name": "Ressurreição", "required_faith": 800, "required_covenant": "davidico", "cooldown_seconds": 7200, "effect": "ressuscita aliado caído com 50% HP", "type": "single_target" },
+      { "id": "lion_den", "name": "Fechar Boca de Leões", "required_faith": 700, "required_covenant": "danielico", "cooldown_seconds": 600, "effect": "acalma bestas selvagens próximas", "type": "area" },
+      { "id": "fiery_furnace", "name": "Proteção na Fornalha", "required_faith": 750, "required_covenant": "danielico", "cooldown_seconds": 300, "effect": "imunidade a dano de fogo por 30s", "type": "self_buff" }
+    ]
+  },
+
+  "server_config": {
+    "description": "Configurações server-side para balanceamento",
+    "prayer_rate_limit": { "max_prayers_per_minute": 5, "max_prayers_per_hour": 100 },
+    "idols": {
+      "description": "Ídolos espalhados pelo mundo que tentam o jogador: shekels em troca de Fé",
+      "shekel_reward": 50,
+      "faith_loss": 50,
+      "debuff": "idolatria"
+    },
+    "pvp": {
+      "enabled": false,
+      "faith_loss_on_pvp_kill": 20,
+      "faith_gain_on_pvp_mercy": 15,
+      "pvp_enabled_zones": ["Terras de Nod", "Vale de Sinar"],
+      "pvp_disabled_zones": ["Éden", "Tabernáculo", "Templo de Salomão"]
+    }
+  }
+}

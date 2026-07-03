@@ -1,0 +1,308 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #1a140c;
+  color: #f0e6d2;
+  overflow: hidden;
+}
+
+.oculto { display: none !important; }
+
+/* ---------- Tela de login ---------- */
+#tela-login {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(232, 201, 90, .15), transparent 60%),
+    linear-gradient(180deg, #2b2113 0%, #1a140c 100%);
+}
+
+.painel-login {
+  background: rgba(30, 24, 14, .92);
+  border: 2px solid #8a6d3b;
+  border-radius: 14px;
+  padding: 36px 44px;
+  max-width: 560px;
+  width: 92%;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(0, 0, 0, .6);
+}
+
+.painel-login h1 {
+  font-size: 2.2rem;
+  color: #e8c95a;
+  letter-spacing: 1px;
+}
+
+.subtitulo { color: #b8a887; margin: 6px 0 22px; }
+
+#input-nome {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1.05rem;
+  background: #14100a;
+  border: 1px solid #8a6d3b;
+  border-radius: 8px;
+  color: #f0e6d2;
+  text-align: center;
+}
+
+.rotulo { margin: 18px 0 10px; color: #b8a887; }
+
+.classes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.btn-classe {
+  background: #241c10;
+  border: 2px solid #4a3a20;
+  border-radius: 10px;
+  color: #f0e6d2;
+  padding: 14px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  transition: all .15s;
+}
+
+.btn-classe:hover { border-color: #8a6d3b; }
+.btn-classe.selecionada {
+  border-color: #e8c95a;
+  background: #2f2410;
+  box-shadow: 0 0 14px rgba(232, 201, 90, .25);
+}
+.btn-classe .icone { font-size: 1.6rem; }
+.btn-classe small { color: #a89877; font-size: .72rem; }
+
+#btn-entrar {
+  margin-top: 22px;
+  width: 100%;
+  padding: 14px;
+  font-size: 1.15rem;
+  font-weight: bold;
+  background: linear-gradient(180deg, #e8c95a, #b8963a);
+  color: #241c10;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+#btn-entrar:hover { filter: brightness(1.1); }
+
+.dica { margin-top: 16px; font-size: .78rem; color: #8a7a5c; }
+
+/* ---------- Jogo ---------- */
+#tela-jogo { position: fixed; inset: 0; }
+#canvas3d { display: block; position: absolute; inset: 0; }
+#overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#hud-equip {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: .85rem;
+}
+#hud-equip span { color: #e8c95a; }
+
+/* ---------- Forja ---------- */
+#forja, #estabulo {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(24, 18, 10, .96);
+  border: 2px solid #d97f4f;
+  border-radius: 14px;
+  padding: 26px 32px;
+  width: 440px;
+  max-width: 92%;
+  z-index: 20;
+  box-shadow: 0 0 50px rgba(0,0,0,.7);
+}
+#forja h2 { color: #d97f4f; text-align: center; }
+#estabulo { border-color: #8fbf6f; }
+#estabulo h2 { color: #8fbf6f; text-align: center; }
+#estabulo .dica { text-align: center; margin-top: 4px; }
+#btn-fechar-estabulo {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #8a6d3b;
+  border-radius: 8px;
+  color: #b8a887;
+  cursor: pointer;
+}
+#btn-fechar-estabulo:hover { border-color: #e8c95a; color: #e8c95a; }
+.forja-sub {
+  text-align: center;
+  color: #a89877;
+  font-size: .78rem;
+  font-style: italic;
+  margin: 8px 0 14px;
+}
+.forja-moedas {
+  text-align: center;
+  color: #e8c95a;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+.forja-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #241c10;
+  border: 1px solid #4a3a20;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+}
+.forja-info { display: flex; flex-direction: column; gap: 4px; }
+.forja-info small { color: #a89877; }
+.forja-item button {
+  background: linear-gradient(180deg, #d97f4f, #a85a30);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+.forja-item button:hover { filter: brightness(1.15); }
+.forja-item button:disabled { filter: grayscale(1); cursor: not-allowed; opacity: .5; }
+#btn-fechar-forja {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #8a6d3b;
+  border-radius: 8px;
+  color: #b8a887;
+  cursor: pointer;
+}
+#btn-fechar-forja:hover { border-color: #e8c95a; color: #e8c95a; }
+
+#hud-topo {
+  position: absolute;
+  top: 12px; left: 12px; right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+#hud-status {
+  background: rgba(20, 16, 10, .8);
+  border: 1px solid #8a6d3b;
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-width: 240px;
+}
+
+#hud-nome { font-weight: bold; color: #e8c95a; margin-bottom: 6px; }
+
+.barra {
+  position: relative;
+  height: 16px;
+  background: #14100a;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+.preenchimento { height: 100%; transition: width .25s; border-radius: 8px; }
+.preenchimento.hp { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+.preenchimento.xp { background: linear-gradient(90deg, #b8963a, #e8c95a); }
+.preenchimento.fe { background: linear-gradient(90deg, #4f8fdb, #a8d8ff); }
+#hud-debuffs { margin-top: 5px; font-size: .75rem; color: #ff9a7a; }
+#hud-pacto { margin-top: 8px; font-size: .8rem; font-weight: bold; line-height: 1.4; min-height: 1.2em; }
+.barra span {
+  position: absolute;
+  inset: 0;
+  font-size: .68rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 1px 2px #000;
+}
+
+#hud-online {
+  background: rgba(20, 16, 10, .8);
+  border: 1px solid #8a6d3b;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: .85rem;
+  text-align: right;
+}
+#hud-hora { color: #e8c95a; margin-top: 4px; }
+
+#hud-quest {
+  position: absolute;
+  top: 110px; right: 12px;
+  background: rgba(20, 16, 10, .85);
+  border: 1px solid #8a6d3b;
+  border-radius: 10px;
+  padding: 12px 16px;
+  max-width: 280px;
+  font-size: .85rem;
+}
+#hud-quest strong { color: #e8c95a; }
+.quest-item { margin-top: 8px; padding-top: 6px; border-top: 1px solid #3a2e1a; }
+.quest-item .quest-titulo { color: #d8c8a8; font-weight: bold; }
+.quest-item.pronta .quest-titulo { color: #7ec8a9; }
+.quest-item .quest-prog { color: #a89877; font-size: .78rem; margin-top: 2px; }
+.quest-item.pronta .quest-prog { color: #7ec8a9; }
+
+#dialogo {
+  position: absolute;
+  left: 50%; bottom: 130px;
+  transform: translateX(-50%);
+  background: rgba(20, 16, 10, .94);
+  border: 2px solid #e8c95a;
+  border-radius: 12px;
+  padding: 16px 22px;
+  max-width: 520px;
+  width: 90%;
+  cursor: pointer;
+}
+#dialogo strong { color: #e8c95a; font-size: 1.05rem; }
+#dialogo p { margin: 8px 0; line-height: 1.45; }
+#dialogo small { color: #8a7a5c; }
+
+#chat {
+  position: absolute;
+  left: 12px; bottom: 12px;
+  width: 380px;
+}
+#chat-mensagens {
+  max-height: 160px;
+  overflow-y: auto;
+  background: rgba(20, 16, 10, .7);
+  border-radius: 10px 10px 0 0;
+  padding: 8px 12px;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+#chat-mensagens .sistema { color: #e8c95a; }
+#chat-mensagens .fala .autor { color: #7ec8a9; font-weight: bold; }
+#chat-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(20, 16, 10, .85);
+  border: 1px solid #4a3a20;
+  border-radius: 0 0 10px 10px;
+  color: #f0e6d2;
+  font-size: .85rem;
+  outline: none;
+}
+#chat-input:focus { border-color: #e8c95a; }
